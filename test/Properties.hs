@@ -1,25 +1,23 @@
 module Properties
-    (
-         -- evalCommutes
-    -- , evalNeutralElement
+    ( evalCommutes
+    , evalNeutralElement
     ) where
 
 import Lib
+import Control.Monad
+import Test.QuickCheck
 import Test.Hspec.QuickCheck
 
 instance Arbitrary Expr where
-    arbitrary = do
-        x <- frequency [ (10, choose (0, 1000))
-                       , (5, choose (1001, 10000))
-                       , (1, choose (10001, 50000))]
-        return $ 
+    arbitrary = sized tree'
+      where tree' 0 = fmap Literal arbitrary
+            tree' n | n>0 =
+                oneof [fmap Literal arbitrary,
+                                  liftM2 Add subtree subtree]
+              where subtree = tree' (n `div` 2)
 
+evalCommutes :: Expr -> Expr -> Bool
+evalCommutes a b = eval (Add a b) == eval (Add b a)
 
--- evalCommutes :: Integer -> Integer -> Bool
--- evalCommutes a b = a + b == b + a
-
--- evalCommutes :: Expr -> Expr -> Bool
--- evalCommutes a b = eval (Add a b) == eval (Add b a)
-
--- evalNeutralElement :: Expr a -> Bool
--- evalNeutralElement a = eval $ Add a (Literal 0) == eval a
+evalNeutralElement :: Expr -> Bool
+evalNeutralElement a = eval ( Add a (Literal 0)) == eval a

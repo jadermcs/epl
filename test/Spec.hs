@@ -29,11 +29,9 @@ specs = do
     describe "Testing Property" $ do
 
         it "add is commutative" $ property
-            True
-            -- evalCommutes
+            evalCommutes
 
         it "add has a neutral element" $ property
-            True
-            -- evalNeutralElement
+            evalNeutralElement
 
 
