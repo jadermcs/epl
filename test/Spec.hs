@@ -16,15 +16,15 @@ specs = do
         let c = Add a (Literal 9)
 
         it "can [show] correct evaluated string." $
-            show a `shouldBe` b
+            toString a `shouldBe` b
 
         it "can evaluate for the correct literal." $
-            eval a `shouldBe` Literal 13
+            eval a `shouldBe` 13
 
         it "can compose from subexpressions with correct value." $ do
-            let value = getValue $ eval c
+            let value = eval c
             value `shouldBe` 22
-            show c `shouldBe` ("(" ++ b ++ " + !9)")
+            toString c `shouldBe` ("(" ++ b ++ " + !9)")
 
     describe "Ring Properties" $ do
 
