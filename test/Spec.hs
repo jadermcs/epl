@@ -10,28 +10,28 @@ main = hspecWith defaultConfig {configFastFail = True} specs
 
 specs :: Spec
 specs = do
-    describe "Testing Implementation" $ do
+    describe "Evaluate" $ do
         let a = Add (Add (Literal 4) (Literal 2)) (Literal 7)
         let b = "((!4 + !2) + !7)"
         let c = Add a (Literal 9)
 
-        it "show returns correct print string" $
+        it "can [show] correct evaluated string." $
             show a `shouldBe` b
 
-        it "eval returns correct value" $
+        it "can evaluate for the correct literal." $
             eval a `shouldBe` Literal 13
 
-        it "composition works" $ do
+        it "can compose from subexpressions with correct value." $ do
             let value = getValue $ eval c
             value `shouldBe` 22
             show c `shouldBe` ("(" ++ b ++ " + !9)")
 
-    describe "Testing Property" $ do
+    describe "Ring Properties" $ do
 
-        it "add is commutative" $ property
+        it "has commutative property." $ property
             evalCommutes
 
-        it "add has a neutral element" $ property
+        it "has a neutral element." $ property
             evalNeutralElement
 
 

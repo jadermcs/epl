@@ -20,4 +20,4 @@ evalCommutes :: Expr -> Expr -> Bool
 evalCommutes a b = eval (Add a b) == eval (Add b a)
 
 evalNeutralElement :: Expr -> Bool
-evalNeutralElement a = eval ( Add a (Literal 0)) == eval a
+evalNeutralElement a = eval (Add a (Literal 0)) == eval a
