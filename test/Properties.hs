@@ -1,13 +1,12 @@
-module Properties
-    ( 
-        -- evalCommutes
-    -- , evalNeutralElement
-    ) where
+-- module Properties
+--     ( evalCommutes
+--     , evalNeutralElement
+--     ) where
 
-import Lib
-import Control.Monad
-import Test.QuickCheck
-import Test.Hspec.QuickCheck
+-- import Lib
+-- import Control.Monad
+-- import Test.QuickCheck
+-- import Test.Hspec.QuickCheck
 
 -- instance Arbitrary Literal where
 --     arbitrary = x
