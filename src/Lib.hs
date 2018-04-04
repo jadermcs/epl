@@ -14,6 +14,8 @@ class Expr e where
 newtype Literal = Literal Int
 newtype Neg e = Neg e
 data Add l r = Add l r
+-- data Sub l r = Sub l r
+-- data Mult l r = Mult l r
 
 instance Expr Literal where
     eval (Literal x) = x
@@ -26,6 +28,3 @@ instance Expr e => Expr (Neg e) where
 instance (Expr l, Expr r) => Expr (Add l r) where
     eval (Add x y) = eval x + eval y
     toString (Add x y) = "(" ++ toString x ++ " + " ++ toString y ++ ")"
-
--- instance Expr e => Show e where
---     show x = show $ eval x
