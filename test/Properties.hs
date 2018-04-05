@@ -11,7 +11,7 @@
 -- instance Arbitrary Literal where
 --     arbitrary = x
 
--- instance (Expr l, Expr r) => Arbitrary (Add l r)where
+-- instance (Expr l, Expr r) => Arbitrary (Add l r) where
 --     arbitrary = sized expr'
 --       where expr' 0 = fmap Literal arbitrary
 --             expr' n | n > 0 = oneof [fmap Literal arbitrary,
