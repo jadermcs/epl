@@ -1,25 +1,40 @@
 module Lib
     ( eval
-    , getValue
-    , Expr(..)
+    , toString
+    , Expr
+    , Literal(..)
+    , Neg(..)
+    , Add(..)
+    , Sub(..)
+    , Mult(..)
     ) where
 
-data Expr = Add Expr Expr | Literal Int
+class Expr e where
+    eval :: e -> Int
+    toString :: e -> String
 
-instance Show Expr where
-    show (Literal x) = '!':show x
-    show (Add el er) = "(" ++ show el ++ " + " ++ show er ++ ")"
+newtype Literal = Literal Int
+newtype Neg e = Neg e
+data Add l r = Add l r
+data Sub l r = Sub l r
+data Mult l r = Mult l r
 
-instance Eq Expr where
-    Literal x == Literal y = x == y
-    Add x y == Add x' y' = getValue x + getValue y == getValue x' + getValue y'
+instance Expr Literal where
+    eval (Literal x) = x
+    toString (Literal x) = '!':show x
 
-getValue :: Expr -> Int
-getValue expr =
-    case expr of Literal x -> x
-                 Add el er -> getValue el + getValue er
+instance Expr e => Expr (Neg e) where
+    eval (Neg x) = negate $ eval x
+    toString (Neg x) = "(-" ++ toString x ++ ")"
 
--- | Documentation for 'eval'
-eval :: Expr -> Expr
-eval (Literal x) = Literal x
-eval (Add el er) = Literal (getValue el + getValue er)
+instance (Expr l, Expr r) => Expr (Add l r) where
+    eval (Add x y) = eval x + eval y
+    toString (Add x y) = "(" ++ toString x ++ " + " ++ toString y ++ ")"
+
+instance (Expr l, Expr r) => Expr (Sub l r) where
+    eval (Sub x y) = eval x - eval y
+    toString (Sub x y) = "(" ++ toString x ++ " - " ++ toString y ++ ")"
+
+instance (Expr l, Expr r) => Expr (Mult l r) where
+    eval (Mult x y) = eval x * eval y
+    toString (Mult x y) = "(" ++ toString x ++ " * " ++ toString y ++ ")"

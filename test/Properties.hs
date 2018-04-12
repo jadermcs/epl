@@ -8,16 +8,8 @@ import Control.Monad
 import Test.QuickCheck
 import Test.Hspec.QuickCheck
 
-instance Arbitrary Expr where
-    arbitrary = sized expr'
-      where expr' 0 = fmap Literal arbitrary
-            expr' n | n>0 =
-                oneof [fmap Literal arbitrary,
-                                  liftM2 Add subexpr subexpr]
-              where subexpr = expr' (n `div` 2)
-
-evalCommutes :: Expr -> Expr -> Bool
+evalCommutes :: Expr e => e -> e -> Bool
 evalCommutes a b = eval (Add a b) == eval (Add b a)
 
-evalNeutralElement :: Expr -> Bool
+evalNeutralElement :: Expr e => e -> Bool
 evalNeutralElement a = eval (Add a (Literal 0)) == eval a
