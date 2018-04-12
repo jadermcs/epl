@@ -23,21 +23,18 @@ instance Expr Literal where
     eval (Literal x) = x
     toString (Literal x) = '!':show x
 
-class (Expr x, Expr y) => Add x y where
-    eval :: e -> Int
+instance Expr e => Expr (Neg e) where
+    eval (Neg x) = negate $ eval x
+    toString (Neg x) = "(-" ++ toString x ++ ")"
 
--- instance Expr e => Expr (Neg e) where
---     eval (Neg x) = negate $ eval x
---     toString (Neg x) = "(-" ++ toString x ++ ")"
+instance (Expr l, Expr r) => Expr (Add l r) where
+    eval (Add x y) = eval x + eval y
+    toString (Add x y) = "(" ++ toString x ++ " + " ++ toString y ++ ")"
 
--- instance (Expr l, Expr r) => Expr (Add l r) where
---     eval (Add x y) = eval x + eval y
---     toString (Add x y) = "(" ++ toString x ++ " + " ++ toString y ++ ")"
+instance (Expr l, Expr r) => Expr (Sub l r) where
+    eval (Sub x y) = eval x - eval y
+    toString (Sub x y) = "(" ++ toString x ++ " - " ++ toString y ++ ")"
 
--- instance (Expr l, Expr r) => Expr (Sub l r) where
---     eval (Sub x y) = eval x - eval y
---     toString (Sub x y) = "(" ++ toString x ++ " - " ++ toString y ++ ")"
-
--- instance (Expr l, Expr r) => Expr (Mult l r) where
---     eval (Mult x y) = eval x * eval y
---     toString (Mult x y) = "(" ++ toString x ++ " * " ++ toString y ++ ")"
+instance (Expr l, Expr r) => Expr (Mult l r) where
+    eval (Mult x y) = eval x * eval y
+    toString (Mult x y) = "(" ++ toString x ++ " * " ++ toString y ++ ")"
